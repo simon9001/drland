@@ -1,26 +1,522 @@
 @import "tailwindcss";
+@plugin "daisyui";
 
+/* ============================================================
+   HIDRACORE — DAVIS & SHIRTLIFF INSPIRED DESIGN SYSTEM
+   Premium Engineering + Water + Energy Theme
+   ============================================================ */
+
+/* ── DESIGN TOKENS ─────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ========================================================
+     DAVIS & SHIRTLIFF INSPIRED BRAND COLORS
+     ======================================================== */
+
+  /* Primary Blue */
+  --primary:        #0082D6;
+  --primary-dark:   #003D6A;
+  --primary-light:  #0099FF;
+  --primary-glow:   rgba(0, 130, 214, 0.15);
+  --primary-subtle: rgba(0, 130, 214, 0.05);
+
+  /* Secondary Yellow */
+  --yellow:         #FDB913;
+  --yellow-dark:    #E5A500;
+  --yellow-glow:    rgba(253, 185, 19, 0.22);
+
+  /* Water Cyan (Merged with Primary Blue) */
+  --cyan:           #0082D6;
+  --cyan-glow:      rgba(0, 130, 214, 0.15);
+
+  /* Success / Energy */
+  --emerald:        #2DC653;
+  --emerald-glow:   rgba(45, 198, 83, 0.18);
+
+  /* ========================================================
+     BACKGROUNDS
+     ======================================================== */
+
+  --bg-void:        #FFFFFF;
+  --bg-deep:        #FFFFFF;
+  --bg-dark:        #F5F7FA;
+  --bg-card:        #FFFFFF;
+  --bg-raised:      #F0F4F8;
+  --bg-overlay:     rgba(255, 255, 255, 0.95);
+
+  /* ========================================================
+     SURFACES
+     ======================================================== */
+
+  --surface-1:      rgba(0, 130, 214, 0.03);
+  --surface-2:      rgba(0, 130, 214, 0.06);
+  --surface-3:      rgba(0, 130, 214, 0.10);
+
+  /* ========================================================
+     BORDERS
+     ======================================================== */
+
+  --border-1:       rgba(0, 0, 0, 0.08);
+  --border-2:       rgba(0, 0, 0, 0.12);
+
+  --border-primary: rgba(0, 130, 214, 0.18);
+  --border-strong:  rgba(0, 130, 214, 0.35);
+
+  /* ========================================================
+     TEXT
+     ======================================================== */
+
+  --text-primary:   #1A2332;
+  --text-secondary: #4A5568;
+  --text-tertiary:  #718096;
+
+  --text-primary-blue: #0082D6;
+  --text-yellow:       #D49A00;
+
+  /* ========================================================
+     TYPOGRAPHY
+     ======================================================== */
+
+  --font-heading: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* ========================================================
+     SPACING
+     ======================================================== */
+
+  --section-py: 7rem;
+
+  /* ========================================================
+     RADIUS
+     ======================================================== */
+
+  --radius-card: 22px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+
+  /* ========================================================
+     SHADOWS
+     ======================================================== */
+
+  --shadow-glow-primary:
+    0 0 20px rgba(0, 130, 214, 0.15);
+
+  --shadow-glow-yellow:
+    0 0 15px rgba(253, 185, 19, 0.16);
+
+  --shadow-card:
+    0 10px 40px rgba(0, 0, 0, 0.06);
+
+  --shadow-card-hover:
+    0 20px 50px rgba(0, 0, 0, 0.12),
+    0 0 20px rgba(0, 130, 214, 0.06);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── BASE RESET ─────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.65;
+  overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── SCROLLBAR ─────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F5F7FA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 130, 214, 0.3);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 130, 214, 0.6);
+}
+
+/* ── TYPOGRAPHY ────────────────────────────────────────────── */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: clamp(2.8rem, 6vw, 5.2rem);
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3.8rem);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+}
+
+h4 {
+  font-size: 1.3rem;
+}
+
+p {
+  color: var(--text-secondary);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ── CONTAINER ─────────────────────────────────────────────── */
+
+.container {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section {
+  padding: var(--section-py) 0;
+}
+
+/* ── GRADIENT TEXT ─────────────────────────────────────────── */
+
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    #003D6A 0%,
+    #0082D6 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-water {
+  background: linear-gradient(
+    135deg,
+    #0082D6 0%,
+    #0099FF 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── SECTION LABEL ─────────────────────────────────────────── */
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  padding: 0.45rem 1rem;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  color: var(--primary);
+
+  border-radius: 999px;
+  border: 1px solid var(--border-primary);
+
+  background: transparent;
+}
+
+/* ── GLASS CARD ────────────────────────────────────────────── */
+
+.glass-card {
+  background: transparent;
+
+  border: 1px solid var(--border-1);
+
+  border-radius: var(--radius-card);
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background 0.35s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-6px);
+
+  background: transparent;
+
+  border-color: var(--border-primary);
+
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* ── BUTTONS ───────────────────────────────────────────────── */
+
+.btn-primary-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.85rem 1.8rem;
+
+  border: none;
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  color: white;
+
+  background: linear-gradient(
+    135deg,
+    var(--primary-light),
+    var(--primary-dark)
+  );
+
+  box-shadow:
+    0 4px 15px rgba(0, 130, 214, 0.2);
+
+  transition: all 0.28s ease;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-custom:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 8px 25px rgba(0, 130, 214, 0.3);
+}
+
+.btn-primary-custom::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.18),
+      transparent
+    );
+
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.btn-primary-custom:hover::after {
+  opacity: 1;
+}
+
+.btn-outline-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.85rem 1.8rem;
+
+  border-radius: 12px;
+  border: 1px solid var(--border-primary);
+
+  background: transparent;
+
+  color: var(--primary);
+
+  font-weight: 600;
+
+  transition: all 0.25s ease;
+
+  cursor: pointer;
+}
+
+.btn-outline-custom:hover {
+  background: var(--surface-1);
+
+  border-color: var(--primary);
+
+  transform: translateY(-2px);
+}
+
+/* ── MESH BACKGROUNDS ──────────────────────────────────────── */
+
+/* ── MESH BACKGROUNDS ──────────────────────────────────────── */
+
+.bg-mesh {
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 20% -10%,
+      rgba(0, 130, 214, 0.06) 0%,
+      transparent 60%
+    ),
+
+    radial-gradient(
+      ellipse 60% 50% at 80% 110%,
+      rgba(253, 185, 19, 0.04) 0%,
+      transparent 60%
+    ),
+
+    var(--bg-deep);
+}
+
+.bg-mesh-alt {
+  background:
+    radial-gradient(
+      ellipse 70% 60% at 90% 20%,
+      rgba(0, 130, 214, 0.05) 0%,
+      transparent 55%
+    ),
+
+    radial-gradient(
+      ellipse 50% 40% at 10% 80%,
+      rgba(253, 185, 19, 0.04) 0%,
+      transparent 50%
+    ),
+
+    var(--bg-dark);
+}
+
+.bg-mesh-void {
+  background:
+    radial-gradient(
+      ellipse 90% 50% at 50% -20%,
+      rgba(0, 130, 214, 0.04) 0%,
+      transparent 65%
+    ),
+
+    var(--bg-void);
+}
+
+/* ── GRID OVERLAY ──────────────────────────────────────────── */
+
+.grid-pattern {
+  background-image:
+    linear-gradient(
+      rgba(0,0,0,0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,0.03) 1px,
+      transparent 1px
+    );
+
+  background-size: 60px 60px;
+}
+
+/* ── GLOW EFFECTS ──────────────────────────────────────────── */
+
+.glow-primary {
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.glow-yellow {
+  box-shadow: var(--shadow-glow-yellow);
+}
+
+.glow-text {
+  text-shadow:
+    0 0 12px rgba(0, 130, 214, 0.2);
+}
+
+/* ── DIVIDER ───────────────────────────────────────────────── */
+
+.divider-glow {
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 130, 214, 0.15),
+      transparent
+    );
+}
+
+/* ── ANIMATIONS ────────────────────────────────────────────── */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fadeup {
+  animation:
+    fadeInUp 0.7s cubic-bezier(0.23,1,0.32,1) both;
+}
+
+.animate-float {
+  animation:
+    float 5s ease-in-out infinite;
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  :root {
+    --section-py: 4.5rem;
+  }
+
+  .container {
+    padding: 0 1.2rem;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 8vw, 3rem);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --section-py: 3.5rem;
+  }
 }
