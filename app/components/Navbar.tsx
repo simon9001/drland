@@ -77,14 +77,15 @@ export default function Navbar() {
           right: 0,
           zIndex: 1000,
           transition: "all 0.4s cubic-bezier(0.23,1,0.32,1)",
-          background: "transparent",
+          background: "#FFFFFF",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
         }}
       >
         <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "72px", maxWidth: "100%", paddingLeft: 0 }}>
 
           {/* ── LOGO ── */}
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.625rem", textDecoration: "none" }}>
-            <img src="/Logo.png" alt="HIDRACORE Logo" style={{ height: "150px", width: "auto" }} />
+            <img src="/Logo.png" alt="HIDRACORE Logo" style={{ height: "100px", width: "auto" }} />
             <span style={{
               fontFamily: "var(--font-heading)",
               fontWeight: 700,
@@ -104,6 +105,7 @@ export default function Navbar() {
                   <button
                     onClick={() => setMegaOpen((o) => !o)}
                     style={{
+                      background: "grey",
                       display: "flex", alignItems: "center", gap: "0.3rem",
                       padding: "0.5rem 0.875rem",
                       borderRadius: "8px",
