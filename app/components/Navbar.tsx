@@ -19,8 +19,10 @@ const SOLUTIONS = [
 
 const NAV_LINKS = [
   { label: "Solutions",  href: "/solutions",  hasMega: true  },
+  { label: "Services",   href: "/services",   hasMega: false },
   { label: "Industries", href: "/industries", hasMega: false },
   { label: "Projects",   href: "/projects",   hasMega: false },
+  { label: "Blogs",      href: "/blogs",      hasMega: false },
   { label: "About",      href: "/about",      hasMega: false },
   { label: "Insights",   href: "/insights",   hasMega: false },
   { label: "Contact",    href: "/contact",    hasMega: false },
