@@ -112,7 +112,7 @@ export default function Navbar() {
                       padding: "0.5rem 0.875rem",
                       borderRadius: "8px",
                       border: "none",
-                      background: megaOpen ? "rgba(0,130,214,0.08)" : "transparent",
+                      // background: megaOpen ? "rgba(0,130,214,0.08)" : "transparent",
                       color: megaOpen ? "#0082D6" : "#4A5568",
                       fontFamily: "var(--font-body)",
                       fontSize: "0.9rem",
