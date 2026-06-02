@@ -115,7 +115,7 @@ export default function Navbar() {
           </Link>
 
           {/* ── DESKTOP NAV ── */}
-          <nav style={{ display: "flex", alignItems: "center", gap: "0.125rem", flex: 1, justifyContent: "center" }} className="hidden-mobile">
+          <nav style={{ display: "flex", alignItems: "center", gap: "0.5rem", flex: 1, justifyContent: "center" }} className="hidden-mobile">
             {NAV_LINKS.map((link) =>
               link.hasMega ? (
                 <div key={link.label} ref={megaRef} style={{ position: "relative" }}>
