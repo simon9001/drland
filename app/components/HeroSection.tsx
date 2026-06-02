@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ShieldCheck, Building2, CheckCircle2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const BANNERS = [
   {
@@ -13,9 +13,7 @@ const BANNERS = [
     highlight: " Energy Infrastructure",
     suffix: " For The Future",
     description:
-      "Integrated solutions in solar power, borehole systems, water treatment, irrigation, pumping, pool construction and engineering consultancy.",
-    stat1: { value: "500+", label: "Projects Completed" },
-    stat2: { value: "12MW",  label: "Solar Installed" },
+      "Integrated solutions in solar power, borehole systems, water treatment, irrigation, pool construction and engineering consultancy.",
     image: "/image.png",
   },
   {
@@ -26,8 +24,6 @@ const BANNERS = [
     suffix: " With Solar",
     description:
       "High-capacity commercial solar and battery storage solutions that eliminate grid dependence and slash operational costs.",
-    stat1: { value: "80%",  label: "Cost Reduction" },
-    stat2: { value: "25yr", label: "System Lifespan" },
     image: "/solar_panels.png",
   },
   {
@@ -38,60 +34,57 @@ const BANNERS = [
     suffix: " At Any Scale",
     description:
       "From deep borehole drilling to industrial-grade purification — reliable water infrastructure for residential, agricultural and industrial use.",
-    stat1: { value: "180m", label: "Max Drill Depth" },
-    stat2: { value: "50k",  label: "L/Day Treatment" },
     image: "/water_treatment.png",
   },
 ];
 
-const BADGES = [
-  { icon: ShieldCheck,  label: "Certified Engineers" },
-  { icon: Building2,    label: "Commercial & Residential" },
-  { icon: CheckCircle2, label: "End-to-End Delivery" },
+const STATS = [
+  { value: "500+", label: "Projects Completed" },
+  { value: "12MW", label: "Solar Installed"    },
+  { value: "15+",  label: "Years Experience"   },
 ];
 
-/* ─── Animated counter ─── */
 function Counter({ target }: { target: string }) {
   const [display, setDisplay] = useState("0");
   const ref     = useRef<HTMLSpanElement>(null);
   const started = useRef(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !started.current) {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !started.current) {
         started.current = true;
         const num  = parseFloat(target.replace(/[^0-9.]/g, ""));
         const unit = target.replace(/[0-9.]/g, "");
         let val = 0;
         const steps = 40;
         const inc   = num / steps;
-        const timer = setInterval(() => {
+        const t = setInterval(() => {
           val += inc;
-          if (val >= num) { setDisplay(target); clearInterval(timer); }
+          if (val >= num) { setDisplay(target); clearInterval(t); }
           else setDisplay((val < 10 ? val.toFixed(1) : Math.floor(val).toString()) + unit);
         }, 35);
       }
     }, { threshold: 0.5 });
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
   }, [target]);
 
   return <span ref={ref}>{display}</span>;
 }
 
 export default function HeroSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [animKey,     setAnimKey]     = useState(0);
+  const [active,  setActive]  = useState(0);
+  const [animKey, setAnimKey] = useState(0);
 
   useEffect(() => {
     const t = setInterval(() => {
-      setActiveIndex((i) => (i + 1) % BANNERS.length);
+      setActive((i) => (i + 1) % BANNERS.length);
       setAnimKey((k) => k + 1);
     }, 7000);
     return () => clearInterval(t);
   }, []);
 
-  const banner = BANNERS[activeIndex];
+  const banner = BANNERS[active];
 
   return (
     <section
@@ -100,275 +93,191 @@ export default function HeroSection() {
         position: "relative",
         minHeight: "100vh",
         display: "flex",
-        alignItems: "center",
+        flexDirection: "column",
+        justifyContent: "flex-end",
         overflow: "hidden",
-        background: "#FFFFFF",
         paddingTop: "72px",
       }}
     >
-      {/* Subtle atmospheric gradient — single, very light */}
-      <div
-        className="animate-blob1"
-        style={{
-          position: "absolute",
-          top: "-15%",
-          left: "-8%",
-          width: "600px",
-          height: "600px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,130,214,0.04) 0%, transparent 70%)",
-          pointerEvents: "none",
-          filter: "blur(50px)",
-        }}
-      />
+      {/* Background images */}
+      {BANNERS.map((b, i) => (
+        <Image
+          key={b.id}
+          src={b.image}
+          alt=""
+          fill
+          priority={i === 0}
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+            opacity: active === i ? 1 : 0,
+            transition: "opacity 1.4s ease",
+            zIndex: 0,
+          }}
+        />
+      ))}
 
-      <div className="container" style={{ position: "relative", zIndex: 10, padding: "5rem 1.5rem" }}>
-        <div
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}
-          className="hero-grid"
-        >
-          {/* ── LEFT ── */}
-          <div key={animKey} style={{ display: "flex", flexDirection: "column", gap: "1.75rem" }}>
+      {/* Dark overlay */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        background: "linear-gradient(to top, rgba(0,10,25,0.90) 0%, rgba(0,10,25,0.60) 50%, rgba(0,10,25,0.30) 100%)",
+        zIndex: 1,
+      }} />
 
-            {/* Eyebrow */}
-            <div className="section-label animate-fadeup">
-              {banner.eyebrow}
-            </div>
+      {/* Content — pinned to bottom of section */}
+      <div className="container" style={{ position: "relative", zIndex: 10, paddingBottom: "4rem" }}>
 
-            {/* Headline */}
-            <h1
-              className="animate-fadeup"
-              style={{
-                fontSize: "clamp(2.8rem, 5.5vw, 4.75rem)",
-                fontWeight: 800,
-                lineHeight: 1.06,
-                letterSpacing: "-0.035em",
-                color: "var(--text-primary)",
-                margin: 0,
-                animationDelay: "60ms",
-              }}
-            >
-              {banner.title}
-              <span className="text-gradient">{banner.highlight}</span>
-              {banner.suffix}
-            </h1>
+        {/* Text block */}
+        <div key={animKey} style={{ maxWidth: "720px", marginBottom: "3rem" }}>
 
-            {/* Description */}
-            <p
-              className="animate-fadeup"
-              style={{
-                fontSize: "1.0625rem",
-                lineHeight: 1.75,
-                color: "var(--text-secondary)",
-                maxWidth: "460px",
-                margin: 0,
-                animationDelay: "120ms",
-              }}
-            >
-              {banner.description}
-            </p>
-
-            {/* CTAs */}
-            <div
-              className="animate-fadeup"
-              style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap", animationDelay: "180ms" }}
-            >
-              <Link href="/contact" className="btn-primary-custom">
-                Request Consultation <ArrowRight size={15} />
-              </Link>
-              <Link href="/solutions" className="btn-outline-custom">
-                Explore Solutions
-              </Link>
-            </div>
-
-            {/* Trust badges */}
-            <div
-              className="animate-fadeup"
-              style={{ display: "flex", flexWrap: "wrap", gap: "1.25rem", animationDelay: "240ms" }}
-            >
-              {BADGES.map((b) => {
-                const Icon = b.icon;
-                return (
-                  <div
-                    key={b.label}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.4rem",
-                      fontSize: "0.8125rem",
-                      fontWeight: 500,
-                      color: "var(--text-tertiary)",
-                    }}
-                  >
-                    <Icon size={13} color="var(--primary)" />
-                    {b.label}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* ── MOBILE STATS ROW — shown only on mobile ── */}
-          <div className="hero-stats-mobile" style={{ display: "none" }}>
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "0.75rem",
-              marginTop: "-0.5rem",
-            }}>
-              {[banner.stat1, banner.stat2].map((stat, i) => (
-                <div
-                  key={i}
-                  style={{
-                    background: "#F5F7FA",
-                    borderRadius: "12px",
-                    padding: "1rem",
-                    border: "1px solid rgba(0,0,0,0.06)",
-                  }}
-                >
-                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.5rem", fontWeight: 800, color: i === 0 ? "var(--primary)" : "var(--emerald)", lineHeight: 1 }}>
-                    <Counter target={stat.value} />
-                  </div>
-                  <div style={{ fontSize: "0.75rem", fontWeight: 500, color: "var(--text-tertiary)", marginTop: "0.25rem" }}>
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ── RIGHT — image + floating stats ── */}
+          {/* Eyebrow */}
           <div
             className="animate-fadeup"
-            style={{ position: "relative", animationDelay: "100ms" }}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              marginBottom: "1.25rem",
+            }}
           >
-            {/* Image card */}
-            <div
-              style={{
-                position: "relative",
-                borderRadius: "20px",
-                overflow: "hidden",
-                border: "1px solid rgba(0,0,0,0.07)",
-                boxShadow: "0 12px 48px rgba(0,0,0,0.10)",
-                aspectRatio: "16/10",
-              }}
-            >
-              {BANNERS.map((b, i) => (
-                <Image
-                  key={b.id}
-                  src={b.image}
-                  alt={b.highlight}
-                  fill
-                  priority={i === 0}
-                  style={{
-                    objectFit: "cover",
-                    opacity: activeIndex === i ? 1 : 0,
-                    transition: "opacity 0.9s ease",
-                  }}
-                />
-              ))}
-              {/* Subtle bottom fade */}
-              <div style={{
-                position: "absolute",
-                inset: 0,
-                background: "linear-gradient(to top, rgba(255,255,255,0.15) 0%, transparent 40%)",
-                pointerEvents: "none",
-              }} />
-            </div>
+            <span style={{ width: "28px", height: "2px", background: "#FDB913", display: "inline-block", borderRadius: "2px" }} />
+            <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>
+              {banner.eyebrow}
+            </span>
+          </div>
 
-            {/* Carousel dots — below the image */}
-            <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", marginTop: "1rem" }}>
-              {BANNERS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => { setActiveIndex(i); setAnimKey((k) => k + 1); }}
-                  style={{
-                    height: "3px",
-                    width: activeIndex === i ? "24px" : "8px",
-                    borderRadius: "99px",
-                    border: "none",
-                    background: activeIndex === i ? "var(--primary)" : "rgba(0,0,0,0.15)",
-                    cursor: "pointer",
-                    transition: "all 0.3s",
-                    padding: 0,
-                  }}
-                  aria-label={`Slide ${i + 1}`}
-                />
-              ))}
-            </div>
+          {/* Headline */}
+          <h1
+            className="animate-fadeup"
+            style={{
+              color: "#FFFFFF",
+              margin: "0 0 1.25rem",
+              fontSize: "clamp(2.8rem, 5.5vw, 5rem)",
+              fontWeight: 800,
+              lineHeight: 1.05,
+              letterSpacing: "-0.035em",
+              animationDelay: "60ms",
+            }}
+          >
+            {banner.title}
+            <span style={{ color: "#FDB913" }}>{banner.highlight}</span>
+            {banner.suffix}
+          </h1>
 
-            {/* Floating stat — bottom left */}
-            <div
-              className="animate-float hero-stat"
-              style={{
-                position: "absolute",
-                bottom: "2.25rem",
-                left: "-1.75rem",
-                background: "#FFFFFF",
-                border: "1px solid rgba(0,0,0,0.07)",
-                borderRadius: "14px",
-                padding: "0.875rem 1.125rem",
-                boxShadow: "0 6px 24px rgba(0,0,0,0.08)",
-              }}
-            >
-              <div style={{
-                fontFamily: "var(--font-heading)",
-                fontSize: "1.5rem",
-                fontWeight: 800,
-                color: "var(--primary)",
-                lineHeight: 1,
-              }}>
-                <Counter target={banner.stat1.value} />
-              </div>
-              <div style={{ fontSize: "0.7rem", fontWeight: 500, color: "var(--text-tertiary)", marginTop: "0.2rem" }}>
-                {banner.stat1.label}
-              </div>
-            </div>
+          {/* Description */}
+          <p
+            className="animate-fadeup"
+            style={{
+              color: "rgba(255,255,255,0.72)",
+              fontSize: "1.0625rem",
+              lineHeight: 1.75,
+              margin: "0 0 2rem",
+              maxWidth: "560px",
+              animationDelay: "110ms",
+            }}
+          >
+            {banner.description}
+          </p>
 
-            {/* Floating stat — top right */}
-            <div
-              className="animate-float hero-stat"
+          {/* CTAs */}
+          <div
+            className="animate-fadeup"
+            style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap", animationDelay: "160ms" }}
+          >
+            <Link
+              href="/contact"
               style={{
-                position: "absolute",
-                top: "-1rem",
-                right: "-1.5rem",
-                background: "#FFFFFF",
-                border: "1px solid rgba(0,0,0,0.07)",
-                borderRadius: "14px",
-                padding: "0.875rem 1.125rem",
-                boxShadow: "0 6px 24px rgba(0,0,0,0.08)",
-                animationDelay: "1.5s",
+                display: "inline-flex", alignItems: "center", gap: "0.5rem",
+                padding: "0.9rem 2rem",
+                borderRadius: "10px",
+                background: "var(--primary)",
+                color: "white",
+                fontWeight: 600,
+                fontSize: "0.9375rem",
+                textDecoration: "none",
+                boxShadow: "0 4px 24px rgba(0,130,214,0.45)",
+                transition: "background 0.2s, transform 0.2s",
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "#006BB5"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "var(--primary)"; e.currentTarget.style.transform = "translateY(0)"; }}
             >
-              <div style={{
-                fontFamily: "var(--font-heading)",
-                fontSize: "1.5rem",
-                fontWeight: 800,
-                color: "var(--emerald)",
-                lineHeight: 1,
-              }}>
-                <Counter target={banner.stat2.value} />
+              Request Consultation <ArrowRight size={15} />
+            </Link>
+            <Link
+              href="/solutions"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "0.5rem",
+                padding: "0.9rem 2rem",
+                borderRadius: "10px",
+                background: "rgba(255,255,255,0.08)",
+                border: "1px solid rgba(255,255,255,0.22)",
+                color: "white",
+                fontWeight: 600,
+                fontSize: "0.9375rem",
+                textDecoration: "none",
+                transition: "background 0.2s",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.14)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+            >
+              Explore Solutions
+            </Link>
+          </div>
+        </div>
+
+        {/* Bottom row — stats + dots */}
+        <div style={{
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: "1.5rem",
+          paddingTop: "2rem",
+          borderTop: "1px solid rgba(255,255,255,0.10)",
+        }}>
+          {/* Stats */}
+          <div style={{ display: "flex", gap: "3rem", flexWrap: "wrap" }}>
+            {STATS.map((stat, i) => (
+              <div key={i}>
+                <div style={{
+                  fontFamily: "var(--font-heading)",
+                  fontSize: "2rem",
+                  fontWeight: 800,
+                  color: "#FFFFFF",
+                  lineHeight: 1,
+                }}>
+                  <Counter target={stat.value} />
+                </div>
+                <div style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.5)", marginTop: "0.2rem" }}>
+                  {stat.label}
+                </div>
               </div>
-              <div style={{ fontSize: "0.7rem", fontWeight: 500, color: "var(--text-tertiary)", marginTop: "0.2rem" }}>
-                {banner.stat2.label}
-              </div>
-            </div>
+            ))}
+          </div>
+
+          {/* Carousel dots */}
+          <div style={{ display: "flex", gap: "0.5rem", paddingBottom: "0.25rem" }}>
+            {BANNERS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => { setActive(i); setAnimKey((k) => k + 1); }}
+                style={{
+                  height: "3px",
+                  width: active === i ? "28px" : "8px",
+                  borderRadius: "99px",
+                  border: "none",
+                  background: active === i ? "white" : "rgba(255,255,255,0.25)",
+                  cursor: "pointer",
+                  transition: "all 0.32s",
+                  padding: 0,
+                }}
+                aria-label={`Slide ${i + 1}`}
+              />
+            ))}
           </div>
         </div>
       </div>
-
-      <style>{`
-        .hero-grid { grid-template-columns: 1fr 1fr; }
-
-        /* Hide floating stat cards on mobile — negative margins overflow viewport */
-        .hero-stat { display: block; }
-
-        @media (max-width: 1024px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
-          .hero-stat { display: none !important; }
-          .hero-stats-mobile { display: block !important; }
-        }
-      `}</style>
     </section>
   );
 }
