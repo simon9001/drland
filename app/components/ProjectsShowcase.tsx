@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, TrendingUp } from "lucide-react";
 
 const PROJECTS = [
@@ -59,11 +60,11 @@ const CATEGORIES = ["All", "solar", "water", "irrigation", "pools"];
 
 const getCategoryColor = (cat: string) => {
   switch (cat) {
-    case "solar": return "#F59E0B";
-    case "water": return "#0EA5E9";
-    case "irrigation": return "#10B981";
-    case "pools": return "#8B5CF6";
-    default: return "#64748B";
+    case "solar":     return "#FDB913";
+    case "water":     return "#0082D6";
+    case "irrigation":return "#2DC653";
+    case "pools":     return "#0099FF";
+    default:          return "#718096";
   }
 };
 
@@ -73,7 +74,7 @@ function useReveal() {
   useEffect(() => {
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
+      { threshold: 0.08 }
     );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
@@ -93,59 +94,85 @@ function ProjectCard({ project, index }: { project: typeof PROJECTS[0]; index: n
       onMouseLeave={() => setHovered(false)}
       style={{
         position: "relative",
-        borderRadius: "24px",
+        borderRadius: "var(--radius-card)",
         overflow: "hidden",
-        backgroundImage: `url(${project.image})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
         cursor: "pointer",
-        transition: "all 0.4s cubic-bezier(0.23,1,0.32,1)",
-        transform: visible ? (hovered ? "scale(1.02)" : "scale(1)") : "scale(0.96)",
+        transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), box-shadow 0.35s",
+        transform: visible ? (hovered ? "scale(1.015)" : "scale(1)") : "scale(0.97)",
         opacity: visible ? 1 : 0,
-        boxShadow: hovered ? "0 25px 50px -12px rgba(0,0,0,0.25)" : "0 10px 15px -3px rgba(0,0,0,0.1)",
-        minHeight: "350px",
+        transitionDelay: `${index * 60}ms`,
+        boxShadow: hovered ? "0 20px 48px rgba(0,0,0,0.22)" : "0 4px 16px rgba(0,0,0,0.08)",
+        minHeight: "280px",
       }}
     >
+      {/* Background image */}
+      <Image
+        src={project.image}
+        alt={project.title}
+        fill
+        style={{ objectFit: "cover" }}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      />
+
+      {/* Overlay gradient */}
       <div style={{
         position: "absolute",
         inset: 0,
-        padding: "2rem",
+        background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.15) 55%, transparent 100%)",
+      }} />
+
+      {/* Content */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        padding: "1.625rem",
         display: "flex",
         flexDirection: "column",
-        background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%)",
       }}>
+        {/* Category badge */}
         <div style={{
-          display: "inline-flex", alignItems: "center", gap: "0.5rem",
-          padding: "0.35rem 0.875rem", borderRadius: "99px",
-          background: `${categoryColor}25`,
-          border: `1px solid ${categoryColor}40`,
+          display: "inline-flex",
+          alignSelf: "flex-start",
+          padding: "0.3rem 0.75rem",
+          borderRadius: "99px",
+          background: `${categoryColor}22`,
+          border: `1px solid ${categoryColor}45`,
           color: categoryColor,
-          fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.05em",
-          textTransform: "uppercase", marginBottom: "auto", alignSelf: "flex-start",
+          fontSize: "0.72rem",
+          fontWeight: 700,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          marginBottom: "auto",
         }}>
           {project.category}
         </div>
 
+        {/* Bottom text */}
         <div style={{ marginTop: "auto" }}>
           <h3 style={{
-            fontFamily: "var(--font-heading)", fontSize: "1.35rem", fontWeight: 700,
-            color: "#FFFFFF", marginBottom: "0.5rem", lineHeight: 1.2,
+            fontFamily: "var(--font-heading)",
+            fontSize: "1.2rem",
+            fontWeight: 700,
+            color: "#FFFFFF",
+            marginBottom: "0.35rem",
+            lineHeight: 1.25,
           }}>
             {project.title}
           </h3>
-          <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "0.9375rem", marginBottom: "1.5rem" }}>
+          <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem", marginBottom: "1.125rem" }}>
             {project.client}
           </p>
 
+          {/* Stats — reveal on hover */}
           <div style={{
-            maxHeight: hovered ? "120px" : "0",
+            maxHeight: hovered ? "80px" : "0",
             opacity: hovered ? 1 : 0,
             overflow: "hidden",
-            transition: "all 0.4s cubic-bezier(0.23,1,0.32,1)",
+            transition: "max-height 0.35s cubic-bezier(0.23,1,0.32,1), opacity 0.3s",
           }}>
-            <div style={{ display: "flex", gap: "2rem", marginBottom: "1rem" }}>
+            <div style={{ display: "flex", gap: "1.75rem" }}>
               <div>
-                <div style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", color: "rgba(255,255,255,0.6)", marginBottom: "0.25rem" }}>
+                <div style={{ fontSize: "0.625rem", fontWeight: 700, textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "0.2rem", letterSpacing: "0.1em" }}>
                   Metric
                 </div>
                 <div style={{ fontSize: "0.875rem", fontWeight: 700, color: "#FFFFFF" }}>
@@ -153,10 +180,10 @@ function ProjectCard({ project, index }: { project: typeof PROJECTS[0]; index: n
                 </div>
               </div>
               <div>
-                <div style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", color: "rgba(255,255,255,0.6)", marginBottom: "0.25rem" }}>
+                <div style={{ fontSize: "0.625rem", fontWeight: 700, textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: "0.2rem", letterSpacing: "0.1em" }}>
                   Impact
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", fontSize: "0.875rem", fontWeight: 700, color: "#10B981" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", fontSize: "0.875rem", fontWeight: 700, color: "#2DC653" }}>
                   <TrendingUp size={13} /> {project.stats.impact}
                 </div>
               </div>
@@ -183,31 +210,33 @@ export default function ProjectsShowcase() {
         position: "relative",
       }}
     >
-      <div className="divider-glow" style={{ position: "absolute", top: 0, width: "100%" }} />
+      <div className="divider-glow" style={{ position: "absolute", top: 0, left: 0, right: 0 }} />
 
-      <div className="container" style={{ position: "relative" }}>
+      <div className="container">
+        {/* Header */}
         <div
           ref={ref}
           style={{
             textAlign: "center",
-            marginBottom: "3rem",
-            transform: visible ? "translateY(0)" : "translateY(20px)",
+            marginBottom: "2.5rem",
+            transform: visible ? "translateY(0)" : "translateY(18px)",
             opacity: visible ? 1 : 0,
-            transition: "all 0.7s cubic-bezier(0.23,1,0.32,1)",
+            transition: "all 0.45s cubic-bezier(0.23,1,0.32,1)",
           }}
         >
-          <div className="section-label" style={{ marginBottom: "1.25rem", color: "#64748B" }}>Featured Projects</div>
-          <h2 style={{ margin: "0 0 1rem", color: "#0F172A" }}>
-            Real Work. Real Results.
+          <div className="section-label" style={{ marginBottom: "0.875rem" }}>Featured Projects</div>
+          <h2 style={{ margin: "0 0 0.5rem" }}>
+            Real Work. <span className="text-gradient">Real Results.</span>
           </h2>
         </div>
 
+        {/* Filter pills */}
         <div style={{
           display: "flex",
           flexWrap: "wrap",
           gap: "0.5rem",
           justifyContent: "center",
-          marginBottom: "3rem",
+          marginBottom: "2.5rem",
         }}>
           {CATEGORIES.map((cat) => {
             const isActive = filter === cat;
@@ -216,15 +245,16 @@ export default function ProjectsShowcase() {
                 key={cat}
                 onClick={() => setFilter(cat)}
                 style={{
-                  padding: "0.45rem 1.1rem",
+                  padding: "0.4rem 1rem",
                   borderRadius: "99px",
-                  background: isActive ? "rgba(0,130,214,0.08)" : "rgba(0,0,0,0.02)",
-                  border: `1px solid ${isActive ? "rgba(0,130,214,0.3)" : "rgba(0,0,0,0.08)"}`,
-                  color: isActive ? "#0082D6" : "#718096",
+                  background: isActive ? "rgba(0,130,214,0.08)" : "transparent",
+                  border: `1px solid ${isActive ? "rgba(0,130,214,0.25)" : "rgba(0,0,0,0.08)"}`,
+                  color: isActive ? "var(--primary)" : "var(--text-tertiary)",
                   fontSize: "0.8125rem",
                   fontWeight: 600,
                   cursor: "pointer",
                   transition: "all 0.2s",
+                  textTransform: "capitalize",
                 }}
               >
                 {cat}
@@ -233,13 +263,15 @@ export default function ProjectsShowcase() {
           })}
         </div>
 
-        {/* Masonry grid */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gridAutoRows: "200px",
-          gap: "1.125rem",
-        }} className="projects-grid">
+        {/* Grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "1rem",
+          }}
+          className="projects-grid"
+        >
           {filtered.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} />
           ))}
@@ -248,7 +280,7 @@ export default function ProjectsShowcase() {
         {/* CTA */}
         <div style={{ textAlign: "center", marginTop: "3rem" }}>
           <Link href="/projects" className="btn-outline-custom">
-            View All Projects <ArrowRight size={16} />
+            View All Projects <ArrowRight size={15} />
           </Link>
         </div>
       </div>

@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Building2, CheckCircle2, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, ShieldCheck, Building2, CheckCircle2 } from "lucide-react";
 
-/* ─── Data ─── */
 const BANNERS = [
   {
     id: 1,
@@ -26,8 +26,8 @@ const BANNERS = [
     suffix: " With Solar",
     description:
       "High-capacity commercial solar and battery storage solutions that eliminate grid dependence and slash operational costs.",
-    stat1: { value: "80%",   label: "Cost Reduction" },
-    stat2: { value: "25yr",  label: "System Lifespan" },
+    stat1: { value: "80%",  label: "Cost Reduction" },
+    stat2: { value: "25yr", label: "System Lifespan" },
     image: "/solar_panels.png",
   },
   {
@@ -38,41 +38,37 @@ const BANNERS = [
     suffix: " At Any Scale",
     description:
       "From deep borehole drilling to industrial-grade purification — reliable water infrastructure for residential, agricultural and industrial use.",
-    stat1: { value: "180m",  label: "Max Drill Depth" },
-    stat2: { value: "50k",   label: "L/Day Treatment" },
+    stat1: { value: "180m", label: "Max Drill Depth" },
+    stat2: { value: "50k",  label: "L/Day Treatment" },
     image: "/water_treatment.png",
   },
 ];
 
 const BADGES = [
-  { icon: ShieldCheck,   label: "Certified Engineers" },
-  { icon: Building2,     label: "Commercial & Residential" },
-  { icon: CheckCircle2,  label: "End-to-End Delivery" },
+  { icon: ShieldCheck,  label: "Certified Engineers" },
+  { icon: Building2,    label: "Commercial & Residential" },
+  { icon: CheckCircle2, label: "End-to-End Delivery" },
 ];
 
 /* ─── Animated counter ─── */
-function Counter({ target, suffix = "" }: { target: string; suffix?: string }) {
+function Counter({ target }: { target: string }) {
   const [display, setDisplay] = useState("0");
-  const ref = useRef<HTMLSpanElement>(null);
+  const ref     = useRef<HTMLSpanElement>(null);
   const started = useRef(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && !started.current) {
         started.current = true;
-        const num = parseFloat(target.replace(/[^0-9.]/g, ""));
+        const num  = parseFloat(target.replace(/[^0-9.]/g, ""));
         const unit = target.replace(/[0-9.]/g, "");
-        let start = 0;
+        let val = 0;
         const steps = 40;
-        const inc = num / steps;
+        const inc   = num / steps;
         const timer = setInterval(() => {
-          start += inc;
-          if (start >= num) {
-            setDisplay(target);
-            clearInterval(timer);
-          } else {
-            setDisplay((start < 10 ? start.toFixed(1) : Math.floor(start).toString()) + unit);
-          }
+          val += inc;
+          if (val >= num) { setDisplay(target); clearInterval(timer); }
+          else setDisplay((val < 10 ? val.toFixed(1) : Math.floor(val).toString()) + unit);
         }, 35);
       }
     }, { threshold: 0.5 });
@@ -80,13 +76,12 @@ function Counter({ target, suffix = "" }: { target: string; suffix?: string }) {
     return () => observer.disconnect();
   }, [target]);
 
-  return <span ref={ref}>{display}{suffix}</span>;
+  return <span ref={ref}>{display}</span>;
 }
 
-/* ─── Component ─── */
 export default function HeroSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [animKey, setAnimKey] = useState(0);
+  const [animKey,     setAnimKey]     = useState(0);
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -111,64 +106,46 @@ export default function HeroSection() {
         paddingTop: "72px",
       }}
     >
-      {/* ── Atmospheric gradient blobs ── */}
+      {/* Subtle atmospheric gradient — single, very light */}
       <div
         className="animate-blob1"
         style={{
           position: "absolute",
-          top: "-20%",
-          left: "-10%",
-          width: "700px",
-          height: "700px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,130,214,0.04) 0%, transparent 70%)",
-          pointerEvents: "none",
-          filter: "blur(40px)",
-        }}
-      />
-      <div
-        className="animate-blob2"
-        style={{
-          position: "absolute",
-          bottom: "-20%",
-          right: "-10%",
+          top: "-15%",
+          left: "-8%",
           width: "600px",
           height: "600px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(45,198,83,0.03) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(0,130,214,0.04) 0%, transparent 70%)",
           pointerEvents: "none",
-          filter: "blur(40px)",
+          filter: "blur(50px)",
         }}
       />
 
-      {/* ── Grid pattern overlay removed as requested ── */}
-
-      {/* ── Content ── */}
-      <div className="container" style={{ position: "relative", zIndex: 10, padding: "5rem 1.5rem 5rem" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }} className="hero-grid">
-
-          {/* LEFT */}
-          <div key={animKey} style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+      <div className="container" style={{ position: "relative", zIndex: 10, padding: "5rem 1.5rem" }}>
+        <div
+          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}
+          className="hero-grid"
+        >
+          {/* ── LEFT ── */}
+          <div key={animKey} style={{ display: "flex", flexDirection: "column", gap: "1.75rem" }}>
 
             {/* Eyebrow */}
-            <div className="section-label animate-fadeup" style={{ width: "max-content" }}>
-              <span
-                style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#0082D6", display: "inline-block" }}
-              />
+            <div className="section-label animate-fadeup">
               {banner.eyebrow}
             </div>
 
             {/* Headline */}
             <h1
-              className="animate-fadeup delay-100"
+              className="animate-fadeup"
               style={{
-                fontSize: "clamp(2.75rem, 5.5vw, 4.75rem)",
-                fontFamily: "var(--font-heading)",
+                fontSize: "clamp(2.8rem, 5.5vw, 4.75rem)",
                 fontWeight: 800,
-                lineHeight: 1.08,
+                lineHeight: 1.06,
                 letterSpacing: "-0.035em",
-                color: "#1A2332",
+                color: "var(--text-primary)",
                 margin: 0,
+                animationDelay: "60ms",
               }}
             >
               {banner.title}
@@ -178,24 +155,26 @@ export default function HeroSection() {
 
             {/* Description */}
             <p
-              className="animate-fadeup delay-200"
+              className="animate-fadeup"
               style={{
                 fontSize: "1.0625rem",
                 lineHeight: 1.75,
-                color: "#4A5568",
-                maxWidth: "480px",
+                color: "var(--text-secondary)",
+                maxWidth: "460px",
                 margin: 0,
+                animationDelay: "120ms",
               }}
             >
               {banner.description}
             </p>
 
-
-
             {/* CTAs */}
-            <div className="animate-fadeup delay-300" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            <div
+              className="animate-fadeup"
+              style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap", animationDelay: "180ms" }}
+            >
               <Link href="/contact" className="btn-primary-custom">
-                Request Consultation <ArrowRight size={16} />
+                Request Consultation <ArrowRight size={15} />
               </Link>
               <Link href="/solutions" className="btn-outline-custom">
                 Explore Solutions
@@ -203,12 +182,25 @@ export default function HeroSection() {
             </div>
 
             {/* Trust badges */}
-            <div className="animate-fadeup delay-400" style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem" }}>
+            <div
+              className="animate-fadeup"
+              style={{ display: "flex", flexWrap: "wrap", gap: "1.25rem", animationDelay: "240ms" }}
+            >
               {BADGES.map((b) => {
                 const Icon = b.icon;
                 return (
-                  <div key={b.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.8125rem", fontWeight: 500, color: "#718096" }}>
-                    <Icon size={14} color="#0082D6" />
+                  <div
+                    key={b.label}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.4rem",
+                      fontSize: "0.8125rem",
+                      fontWeight: 500,
+                      color: "var(--text-tertiary)",
+                    }}
+                  >
+                    <Icon size={13} color="var(--primary)" />
                     {b.label}
                   </div>
                 );
@@ -216,151 +208,165 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* RIGHT — image + stats */}
-          <div className="animate-fadein delay-200" style={{ position: "relative" }}>
+          {/* ── MOBILE STATS ROW — shown only on mobile ── */}
+          <div className="hero-stats-mobile" style={{ display: "none" }}>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "0.75rem",
+              marginTop: "-0.5rem",
+            }}>
+              {[banner.stat1, banner.stat2].map((stat, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: "#F5F7FA",
+                    borderRadius: "12px",
+                    padding: "1rem",
+                    border: "1px solid rgba(0,0,0,0.06)",
+                  }}
+                >
+                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.5rem", fontWeight: 800, color: i === 0 ? "var(--primary)" : "var(--emerald)", lineHeight: 1 }}>
+                    <Counter target={stat.value} />
+                  </div>
+                  <div style={{ fontSize: "0.75rem", fontWeight: 500, color: "var(--text-tertiary)", marginTop: "0.25rem" }}>
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── RIGHT — image + floating stats ── */}
+          <div
+            className="animate-fadeup"
+            style={{ position: "relative", animationDelay: "100ms" }}
+          >
             {/* Image card */}
             <div
               style={{
                 position: "relative",
-                borderRadius: "24px",
+                borderRadius: "20px",
                 overflow: "hidden",
-                border: "1px solid rgba(0,0,0,0.08)",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.12)",
+                border: "1px solid rgba(0,0,0,0.07)",
+                boxShadow: "0 12px 48px rgba(0,0,0,0.10)",
                 aspectRatio: "16/10",
               }}
             >
               {BANNERS.map((b, i) => (
-                <img
+                <Image
                   key={b.id}
                   src={b.image}
                   alt={b.highlight}
+                  fill
+                  priority={i === 0}
                   style={{
-                    position: "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
                     objectFit: "cover",
                     opacity: activeIndex === i ? 1 : 0,
-                    transition: "opacity 1s ease",
+                    transition: "opacity 0.9s ease",
                   }}
                 />
               ))}
-              {/* Overlay */}
+              {/* Subtle bottom fade */}
               <div style={{
-                position: "absolute", inset: 0,
-                background: "linear-gradient(to top, rgba(255,255,255,0.3) 0%, transparent 50%)",
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to top, rgba(255,255,255,0.15) 0%, transparent 40%)",
+                pointerEvents: "none",
               }} />
-
-              {/* Carousel dots */}
-              <div style={{
-                position: "absolute", bottom: "1.25rem", left: "50%", transform: "translateX(-50%)",
-                display: "flex", gap: "0.5rem", zIndex: 5,
-              }}>
-                {BANNERS.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => { setActiveIndex(i); setAnimKey((k) => k + 1); }}
-                    style={{
-                      height: "4px",
-                      width: activeIndex === i ? "28px" : "8px",
-                      borderRadius: "99px",
-                      border: "none",
-                      background: activeIndex === i ? "#0082D6" : "rgba(0,0,0,0.2)",
-                      cursor: "pointer",
-                      transition: "all 0.35s",
-                      padding: 0,
-                    }}
-                    aria-label={`Slide ${i + 1}`}
-                  />
-                ))}
-              </div>
             </div>
 
-            {/* Floating stat cards */}
+            {/* Carousel dots — below the image */}
+            <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", marginTop: "1rem" }}>
+              {BANNERS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => { setActiveIndex(i); setAnimKey((k) => k + 1); }}
+                  style={{
+                    height: "3px",
+                    width: activeIndex === i ? "24px" : "8px",
+                    borderRadius: "99px",
+                    border: "none",
+                    background: activeIndex === i ? "var(--primary)" : "rgba(0,0,0,0.15)",
+                    cursor: "pointer",
+                    transition: "all 0.3s",
+                    padding: 0,
+                  }}
+                  aria-label={`Slide ${i + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Floating stat — bottom left */}
             <div
-              className="animate-float"
+              className="animate-float hero-stat"
               style={{
                 position: "absolute",
-                bottom: "-1.5rem",
-                left: "-2rem",
+                bottom: "2.25rem",
+                left: "-1.75rem",
                 background: "#FFFFFF",
-                border: "1px solid rgba(0,130,214,0.15)",
-                borderRadius: "16px",
-                padding: "1rem 1.25rem",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+                border: "1px solid rgba(0,0,0,0.07)",
+                borderRadius: "14px",
+                padding: "0.875rem 1.125rem",
+                boxShadow: "0 6px 24px rgba(0,0,0,0.08)",
               }}
             >
-              <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.625rem", fontWeight: 800, color: "#0082D6", lineHeight: 1 }}>
+              <div style={{
+                fontFamily: "var(--font-heading)",
+                fontSize: "1.5rem",
+                fontWeight: 800,
+                color: "var(--primary)",
+                lineHeight: 1,
+              }}>
                 <Counter target={banner.stat1.value} />
               </div>
-              <div style={{ fontSize: "0.75rem", fontWeight: 500, color: "#718096", marginTop: "0.25rem" }}>
+              <div style={{ fontSize: "0.7rem", fontWeight: 500, color: "var(--text-tertiary)", marginTop: "0.2rem" }}>
                 {banner.stat1.label}
               </div>
             </div>
 
+            {/* Floating stat — top right */}
             <div
-              className="animate-float delay-300"
+              className="animate-float hero-stat"
               style={{
                 position: "absolute",
-                top: "-1.25rem",
+                top: "-1rem",
                 right: "-1.5rem",
                 background: "#FFFFFF",
-                border: "1px solid rgba(0,130,214,0.15)",
-                borderRadius: "16px",
-                padding: "1rem 1.25rem",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+                border: "1px solid rgba(0,0,0,0.07)",
+                borderRadius: "14px",
+                padding: "0.875rem 1.125rem",
+                boxShadow: "0 6px 24px rgba(0,0,0,0.08)",
+                animationDelay: "1.5s",
               }}
             >
-              <div style={{ fontFamily: "var(--font-heading)", fontSize: "1.625rem", fontWeight: 800, color: "#2DC653", lineHeight: 1 }}>
+              <div style={{
+                fontFamily: "var(--font-heading)",
+                fontSize: "1.5rem",
+                fontWeight: 800,
+                color: "var(--emerald)",
+                lineHeight: 1,
+              }}>
                 <Counter target={banner.stat2.value} />
               </div>
-              <div style={{ fontSize: "0.75rem", fontWeight: 500, color: "#718096", marginTop: "0.25rem" }}>
+              <div style={{ fontSize: "0.7rem", fontWeight: 500, color: "var(--text-tertiary)", marginTop: "0.2rem" }}>
                 {banner.stat2.label}
               </div>
             </div>
-
-            {/* Next slide hint */}
-            <button
-              onClick={() => { setActiveIndex((i) => (i + 1) % BANNERS.length); setAnimKey((k) => k + 1); }}
-              style={{
-                position: "absolute",
-                right: "-1rem",
-                top: "50%",
-                transform: "translateY(-50%)",
-                width: "36px", height: "36px",
-                borderRadius: "50%",
-                background: "rgba(0,130,214,0.1)",
-                border: "1px solid rgba(0,130,214,0.25)",
-                color: "#0082D6",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
-              aria-label="Next slide"
-            >
-              <ChevronRight size={16} />
-            </button>
           </div>
         </div>
-
-
       </div>
 
       <style>{`
-        .hero-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .show-mobile-hero {
-          display: none;
-        }
+        .hero-grid { grid-template-columns: 1fr 1fr; }
+
+        /* Hide floating stat cards on mobile — negative margins overflow viewport */
+        .hero-stat { display: block; }
+
         @media (max-width: 1024px) {
-          .hero-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .show-mobile-hero {
-            display: flex;
-            width: 100%;
-          }
+          .hero-grid { grid-template-columns: 1fr !important; }
+          .hero-stat { display: none !important; }
+          .hero-stats-mobile { display: block !important; }
         }
       `}</style>
     </section>
