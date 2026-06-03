@@ -71,13 +71,20 @@ export default function Footer() {
           {/* Brand column */}
           <div>
             <div style={{ marginBottom: "1.375rem" }}>
-              <Image
-                src="/Logo.png"
-                alt="HIDRACORE"
-                width={140}
-                height={48}
-                style={{ height: "44px", width: "auto", objectFit: "contain", filter: "brightness(0) invert(1)" }}
-              />
+              <div style={{
+                display: "inline-block",
+                background: "rgba(255,255,255,0.95)",
+                borderRadius: "10px",
+                padding: "6px 14px",
+              }}>
+                <Image
+                  src="/Logo.png"
+                  alt="HIDRACORE"
+                  width={140}
+                  height={48}
+                  style={{ height: "42px", width: "auto", objectFit: "contain", display: "block" }}
+                />
+              </div>
             </div>
             <p style={{
               color: "rgba(255,255,255,0.58)",
