@@ -140,35 +140,30 @@ a { text-decoration: none; color: inherit; }
   gap: 0.5rem;
   padding: 0.825rem 1.75rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 0.9375rem;
   font-weight: 600;
   color: white;
   background: var(--primary);
-  box-shadow: 0 2px 8px rgba(0,130,214,0.22);
-  transition: background 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+  transition: background 0.18s ease;
   text-decoration: none;
 }
 
-.btn-primary-custom:hover {
-  background: #006BB5;
-  box-shadow: 0 6px 20px rgba(0,130,214,0.28);
-  transform: translateY(-2px);
-}
+.btn-primary-custom:hover { background: #006BB5; }
 
 .btn-outline-custom {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.825rem 1.75rem;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid var(--border-primary);
   background: transparent;
   color: var(--primary);
   font-size: 0.9375rem;
   font-weight: 600;
-  transition: background 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
+  transition: background 0.18s ease, border-color 0.18s ease;
   cursor: pointer;
   text-decoration: none;
 }
@@ -176,7 +171,6 @@ a { text-decoration: none; color: inherit; }
 .btn-outline-custom:hover {
   background: var(--primary-subtle);
   border-color: var(--primary);
-  transform: translateY(-2px);
 }
 
 /* ── NAV LINK — CSS-driven hover ──────────────────────────── */

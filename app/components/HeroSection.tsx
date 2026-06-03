@@ -8,32 +8,32 @@ import { ArrowRight } from "lucide-react";
 const BANNERS = [
   {
     id: 1,
-    eyebrow: "Infrastructure Solutions Leader",
-    title: "Engineering Water &",
-    highlight: " Energy Infrastructure",
-    suffix: " For The Future",
+    eyebrow: "Full-Service Engineering Contractor",
+    title: "Water and energy infrastructure,",
+    highlight: " delivered start to finish.",
+    suffix: "",
     description:
-      "Integrated solutions in solar power, borehole systems, water treatment, irrigation, pool construction and engineering consultancy.",
+      "We assess, design, supply the equipment, and complete the installation. Solar, boreholes, water treatment, irrigation, pools and engineering consultancy — one team, one point of contact.",
     image: "/image.png",
   },
   {
     id: 2,
-    eyebrow: "Commercial & Industrial Energy",
-    title: "Achieve Energy",
-    highlight: " Independence",
-    suffix: " With Solar",
+    eyebrow: "Commercial & Industrial Projects",
+    title: "No third parties.",
+    highlight: " No coordination headaches.",
+    suffix: "",
     description:
-      "High-capacity commercial solar and battery storage solutions that eliminate grid dependence and slash operational costs.",
+      "From feasibility study to final commissioning, our engineers own every stage of your project. Commercial solar, industrial water treatment, large-scale irrigation and more.",
     image: "/solar_panels.png",
   },
   {
     id: 3,
-    eyebrow: "Borehole & Water Treatment",
-    title: "Advanced Water",
-    highlight: " Infrastructure",
-    suffix: " At Any Scale",
+    eyebrow: "Borehole & Water Solutions",
+    title: "Clean, reliable water —",
+    highlight: " properly engineered.",
+    suffix: "",
     description:
-      "From deep borehole drilling to industrial-grade purification — reliable water infrastructure for residential, agricultural and industrial use.",
+      "Borehole drilling, water treatment, chemical supply, pumping systems and irrigation — designed for your specific site conditions, not sold off a shelf.",
     image: "/water_treatment.png",
   },
 ];
@@ -196,11 +196,10 @@ export default function HeroSection() {
                 fontWeight: 600,
                 fontSize: "0.9375rem",
                 textDecoration: "none",
-                boxShadow: "0 4px 24px rgba(0,130,214,0.45)",
-                transition: "background 0.2s, transform 0.2s",
+                transition: "background 0.18s",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "#006BB5"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "var(--primary)"; e.currentTarget.style.transform = "translateY(0)"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "#006BB5"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "var(--primary)"; }}
             >
               Request Consultation <ArrowRight size={15} />
             </Link>

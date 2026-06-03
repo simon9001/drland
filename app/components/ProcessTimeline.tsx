@@ -1,89 +1,107 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Search, PenTool, Wrench, CheckCircle2 } from "lucide-react";
+import { MapPin, PenTool, Package, Wrench, ClipboardCheck, Headphones } from "lucide-react";
 
 const STEPS = [
   {
-    id: "consultation",
+    id: "assessment",
     step: "01",
-    title: "Site Assessment & Consultation",
-    desc: "Our engineers conduct comprehensive on-site analysis, understanding your specific water or energy requirements.",
-    icon: Search,
+    title: "Site Assessment",
+    desc: "Our engineers visit your site, survey the conditions, and document exactly what your water or energy system needs. Nothing is assumed.",
+    icon: MapPin,
   },
   {
     id: "design",
     step: "02",
-    title: "Custom System Design",
-    desc: "We engineer a tailored solution using industry-leading software to guarantee optimal efficiency and ROI.",
+    title: "Engineering Design",
+    desc: "We produce a full technical design — drawings, specifications, and a bill of quantities — tailored to your site and budget.",
     icon: PenTool,
   },
   {
-    id: "installation",
+    id: "supply",
     step: "03",
+    title: "Equipment Supply",
+    desc: "We source and supply every component ourselves: pumps, inverters, pipes, chemicals, electronics. Correctly specified, no substitutions.",
+    icon: Package,
+  },
+  {
+    id: "installation",
+    step: "04",
     title: "Professional Installation",
-    desc: "Certified technicians install your system with strict adherence to international quality and safety standards.",
+    desc: "Our certified technicians complete the installation to design specification, adhering to local regulations and international standards.",
     icon: Wrench,
   },
   {
-    id: "maintenance",
-    step: "04",
-    title: "Commissioning & Support",
-    desc: "Rigorous testing before handover, backed by proactive maintenance plans and 24/7 technical support.",
-    icon: CheckCircle2,
+    id: "commissioning",
+    step: "05",
+    title: "Commissioning & Testing",
+    desc: "Every system is rigorously tested before handover. We don't sign off until the system performs to its designed output.",
+    icon: ClipboardCheck,
+  },
+  {
+    id: "support",
+    step: "06",
+    title: "Ongoing Support",
+    desc: "Maintenance contracts, scheduled servicing, emergency call-outs and system audits keep your infrastructure running long-term.",
+    icon: Headphones,
   },
 ];
 
-export default function ProcessTimeline() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [visible,   setVisible]   = useState(false);
-
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
+      ([e]) => { if (e.isIntersecting) setVisible(true); },
+      { threshold: 0.1 }
     );
-    if (sectionRef.current) obs.observe(sectionRef.current);
+    if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
+  return { ref, visible };
+}
+
+export default function ProcessTimeline() {
+  const { ref: headRef, visible: headVisible } = useReveal();
+  const { ref: gridRef, visible: gridVisible } = useReveal();
 
   return (
     <section
       id="process"
-      ref={sectionRef}
-      style={{
-        padding: "var(--section-py) 0",
-        background: "#FFFFFF",
-        position: "relative",
-      }}
+      style={{ padding: "var(--section-py) 0", background: "#FFFFFF", position: "relative" }}
     >
       <div className="divider-glow" style={{ position: "absolute", top: 0, left: 0, right: 0 }} />
 
       <div className="container">
+
         {/* Header */}
-        <div style={{
-          textAlign: "center",
-          marginBottom: "4.5rem",
-          transform: visible ? "translateY(0)" : "translateY(18px)",
-          opacity: visible ? 1 : 0,
-          transition: "all 0.45s cubic-bezier(0.23,1,0.32,1)",
-        }}>
+        <div
+          ref={headRef}
+          style={{
+            textAlign: "center",
+            marginBottom: "3.5rem",
+            transform: headVisible ? "translateY(0)" : "translateY(16px)",
+            opacity: headVisible ? 1 : 0,
+            transition: "all 0.45s cubic-bezier(0.23,1,0.32,1)",
+          }}
+        >
           <div className="section-label" style={{ marginBottom: "0.875rem" }}>Our Process</div>
           <h2 style={{ margin: "0 0 0.875rem" }}>
-            How We <span className="text-gradient">Work</span>
+            Site to switch-on — <span className="text-gradient">six clear steps.</span>
           </h2>
-          <p style={{ maxWidth: "460px", margin: "0 auto", fontSize: "1rem", color: "var(--text-tertiary)" }}>
-            A structured, transparent process that takes your project from initial
-            brief to operational system — without surprises.
+          <p style={{ maxWidth: "480px", margin: "0 auto", fontSize: "1rem", color: "var(--text-tertiary)" }}>
+            A transparent process with no surprises. Every stage is managed in-house by our engineers.
           </p>
         </div>
 
-        {/* Steps */}
+        {/* 3 × 2 grid */}
         <div
+          ref={gridRef}
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "1.5rem",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "1.25rem",
           }}
           className="steps-grid"
         >
@@ -93,67 +111,60 @@ export default function ProcessTimeline() {
               <div
                 key={step.id}
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  transform: visible ? "translateY(0)" : "translateY(22px)",
-                  opacity: visible ? 1 : 0,
-                  transition: `transform 0.45s cubic-bezier(0.23,1,0.32,1) ${i * 90}ms, opacity 0.45s ease ${i * 90}ms`,
+                  padding: "1.625rem",
+                  background: "var(--bg-dark)",
+                  border: "1px solid rgba(0,0,0,0.06)",
+                  borderRadius: "14px",
+                  transform: gridVisible ? "translateY(0)" : "translateY(18px)",
+                  opacity: gridVisible ? 1 : 0,
+                  transition: `all 0.45s cubic-bezier(0.23,1,0.32,1) ${i * 65}ms`,
                 }}
               >
-                {/* Step number + icon */}
-                <div style={{ marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.875rem" }}>
+                {/* Step number + icon row */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
+                  <span style={{
+                    fontFamily: "var(--font-heading)",
+                    fontSize: "2rem",
+                    fontWeight: 800,
+                    color: "rgba(0,130,214,0.12)",
+                    lineHeight: 1,
+                    letterSpacing: "-0.03em",
+                  }}>
+                    {step.step}
+                  </span>
                   <div style={{
-                    width: "52px",
-                    height: "52px",
-                    borderRadius: "50%",
-                    background: "rgba(0,130,214,0.07)",
-                    border: "1px solid rgba(0,130,214,0.15)",
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "10px",
+                    background: "#FFFFFF",
+                    border: "1px solid rgba(0,0,0,0.07)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     color: "var(--primary)",
-                    flexShrink: 0,
                   }}>
-                    <Icon size={22} strokeWidth={1.6} />
+                    <Icon size={19} strokeWidth={1.6} />
                   </div>
-                  <span style={{
-                    fontSize: "0.65rem",
-                    fontWeight: 800,
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: "var(--primary)",
-                    opacity: 0.6,
-                  }}>
-                    Step {step.step}
-                  </span>
                 </div>
 
-                {/* Card */}
-                <div style={{
-                  background: "#FFFFFF",
-                  border: "1px solid rgba(0,0,0,0.07)",
-                  borderRadius: "var(--radius-lg)",
-                  padding: "1.375rem",
-                  flex: 1,
+                <h4 style={{
+                  fontFamily: "var(--font-heading)",
+                  fontSize: "1.0625rem",
+                  fontWeight: 700,
+                  color: "var(--text-primary)",
+                  marginBottom: "0.5rem",
+                  lineHeight: 1.3,
                 }}>
-                  <h4 style={{
-                    fontSize: "1rem",
-                    fontWeight: 700,
-                    color: "var(--text-primary)",
-                    marginBottom: "0.625rem",
-                    lineHeight: 1.35,
-                  }}>
-                    {step.title}
-                  </h4>
-                  <p style={{
-                    fontSize: "0.9rem",
-                    color: "var(--text-tertiary)",
-                    lineHeight: 1.65,
-                    margin: 0,
-                  }}>
-                    {step.desc}
-                  </p>
-                </div>
+                  {step.title}
+                </h4>
+                <p style={{
+                  fontSize: "0.9rem",
+                  color: "var(--text-tertiary)",
+                  lineHeight: 1.65,
+                  margin: 0,
+                }}>
+                  {step.desc}
+                </p>
               </div>
             );
           })}

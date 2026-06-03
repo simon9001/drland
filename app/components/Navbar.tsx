@@ -10,20 +10,19 @@ import {
 } from "lucide-react";
 
 const SOLUTIONS = [
-  { icon: Sun,      label: "Solar & Energy",         href: "/solutions#solar",           desc: "Grid-tied, hybrid & off-grid systems" },
-  { icon: HardHat,  label: "Borehole Drilling",       href: "/solutions#borehole",        desc: "Site survey to pump installation" },
-  { icon: Droplets, label: "Water Treatment",         href: "/solutions#water-treatment", desc: "RO, UV & industrial filtration" },
-  { icon: Sprout,   label: "Irrigation Systems",      href: "/solutions#irrigation",      desc: "Drip, sprinkler & smart scheduling" },
-  { icon: Waves,    label: "Swimming Pools",          href: "/solutions#pools",           desc: "Luxury design & construction" },
-  { icon: Zap,      label: "Engineering Consultancy", href: "/solutions#consultancy",     desc: "Feasibility, audits & certification" },
+  { icon: Sun,      label: "Solar Power Solutions",         href: "/services#solar",       desc: "Grid-tied, hybrid & off-grid systems" },
+  { icon: HardHat,  label: "Borehole Drilling & Equipping", href: "/services#borehole",    desc: "Site survey to full commissioning" },
+  { icon: Droplets, label: "Water Treatment & Design",      href: "/services#water",       desc: "RO, UV & industrial filtration" },
+  { icon: Sprout,   label: "Irrigation Systems",            href: "/services#irrigation",  desc: "Drip, sprinkler & automated scheduling" },
+  { icon: Waves,    label: "Swimming Pool Construction",     href: "/services#pools",       desc: "Design, build & maintenance" },
+  { icon: Zap,      label: "Engineering Consultancy",       href: "/services#consultancy", desc: "Feasibility, audits & certification" },
 ];
 
+/* 6 items — no duplicate Solutions/Services */
 const NAV_LINKS = [
-  { label: "Solutions",  href: "/solutions",  hasMega: true  },
-  { label: "Services",   href: "/services",   hasMega: false },
+  { label: "Services",   href: "/services",   hasMega: true  },
   { label: "Industries", href: "/industries", hasMega: false },
   { label: "Projects",   href: "/projects",   hasMega: false },
-  { label: "Blogs",      href: "/blogs",      hasMega: false },
   { label: "About",      href: "/about",      hasMega: false },
   { label: "Insights",   href: "/insights",   hasMega: false },
   { label: "Contact",    href: "/contact",    hasMega: false },

@@ -2,164 +2,160 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, Sun, Droplets, Sprout, Waves, Zap, Shield } from "lucide-react";
+import {
+  ArrowRight,
+  Sun, HardHat, Droplets, Sprout, Waves, ClipboardList,
+  FlaskConical, Zap, Gauge, Network, Cpu, ToggleRight,
+} from "lucide-react";
 
-const SERVICES = [
+/* ── Core engineering services ── */
+const CORE = [
   {
     id: "solar",
     title: "Solar Power Solutions",
-    description: "Commercial and residential solar installations, hybrid systems, and battery storage.",
+    description: "Grid-tied, hybrid and off-grid solar installations for homes, farms, and commercial facilities. We handle design, supply, and installation.",
     icon: Sun,
-    accent: "#FDB913",
-    image: "/solar_panels.png",
+    href: "/services/solar",
   },
   {
     id: "borehole",
     title: "Borehole Drilling & Equipping",
-    description: "Professional drilling, pump installation, and complete water system setup.",
-    icon: Droplets,
-    accent: "#0082D6",
-    image: "/image.png",
+    description: "Site survey, geological assessment, drilling, casing, pump selection and full commissioning. Domestic through to industrial yields.",
+    icon: HardHat,
+    href: "/services/borehole",
   },
   {
     id: "water",
-    title: "Water Treatment",
-    description: "Advanced filtration, purification systems, and chemical supply for safe water.",
+    title: "Water Treatment & Design",
+    description: "Reverse osmosis, UV, filtration and chemical dosing systems designed for your water source and consumption profile.",
     icon: Droplets,
-    accent: "#0099FF",
-    image: "/water_treatment.png",
+    href: "/services/water-treatment",
   },
   {
     id: "irrigation",
-    title: "Smart Irrigation",
-    description: "Drip lines, overhead sprinklers, and automated agricultural water systems.",
+    title: "Irrigation Systems",
+    description: "Drip irrigation, overhead sprinklers, and automated scheduling for agricultural and landscaping applications.",
     icon: Sprout,
-    accent: "#2DC653",
-    image: "/solar_panels.png",
+    href: "/services/irrigation",
   },
   {
     id: "pools",
-    title: "Swimming Pools",
-    description: "Design, construction, and maintenance of premium residential and commercial pools.",
+    title: "Swimming Pool Design & Construction",
+    description: "End-to-end pool projects — structural design, excavation, plumbing, filtration, and finishing for residential and commercial sites.",
     icon: Waves,
-    accent: "#0082D6",
-    image: "/water_treatment.png",
+    href: "/services/pools",
   },
   {
     id: "consultancy",
     title: "Engineering Consultancy",
-    description: "Expert design, planning, and project management for water and energy infrastructure.",
-    icon: Shield,
-    accent: "#003D6A",
-    image: "/image.png",
+    description: "Feasibility studies, technical audits, project management, and compliance certification for water and energy infrastructure.",
+    icon: ClipboardList,
+    href: "/services/consultancy",
   },
+];
+
+/* ── Supply & equipment — what we source and supply on every project ── */
+const SUPPLY = [
+  { id: "chemicals",   label: "Chemical Supply",     desc: "Water treatment and pool chemicals",       icon: FlaskConical },
+  { id: "inverters",   label: "Inverters",            desc: "Solar inverters and hybrid units",         icon: Zap          },
+  { id: "pumping",     label: "Pumping Systems",      desc: "Submersible, surface and booster pumps",  icon: Gauge        },
+  { id: "pipes",       label: "Pipes & Fittings",     desc: "HDPE, uPVC, and galvanised pipework",     icon: Network      },
+  { id: "electronics", label: "Electronics",          desc: "Sensors, controllers and automation",     icon: Cpu          },
+  { id: "breakers",    label: "Circuit Breakers",     desc: "MCBs, RCDs and distribution boards",      icon: ToggleRight  },
 ];
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.12 }
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setVisible(true); },
+      { threshold: 0.1 }
     );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
   }, []);
   return { ref, visible };
 }
 
-function ServiceCard({ service, delay }: { service: typeof SERVICES[0]; delay: number }) {
+function CoreCard({ svc, delay }: { svc: typeof CORE[0]; delay: number }) {
   const { ref, visible } = useReveal();
-  const Icon = service.icon;
+  const Icon = svc.icon;
 
   return (
-    <div
-      ref={ref}
-      className="service-card"
+    <Link
+      ref={ref as React.Ref<HTMLAnchorElement>}
+      href={svc.href}
       style={{
-        position: "relative",
-        background: "#FFFFFF",
-        border: "1px solid rgba(0,0,0,0.07)",
-        borderRadius: "var(--radius-card)",
-        overflow: "hidden",
-        cursor: "pointer",
-        transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), box-shadow 0.35s, border-color 0.35s",
-        transform: visible ? "translateY(0)" : "translateY(20px)",
-        opacity: visible ? 1 : 0,
-        transitionDelay: `${delay}ms`,
-        height: "100%",
         display: "flex",
         flexDirection: "column",
+        padding: "1.75rem",
+        background: "#FFFFFF",
+        border: "1px solid rgba(0,0,0,0.07)",
+        borderRadius: "14px",
+        textDecoration: "none",
+        transition: "border-color 0.22s, box-shadow 0.22s",
+        transform: visible ? "translateY(0)" : "translateY(18px)",
+        opacity: visible ? 1 : 0,
+        transitionDelay: `${delay}ms`,
+        cursor: "pointer",
       }}
+      className="core-card"
     >
-      {/* Image */}
-      <div style={{ position: "relative", height: "180px", flexShrink: 0 }}>
-        <Image
-          src={service.image}
-          alt={service.title}
-          fill
-          style={{ objectFit: "cover" }}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        />
+      {/* Icon */}
+      <div style={{
+        width: "48px",
+        height: "48px",
+        borderRadius: "12px",
+        background: "rgba(0,130,214,0.07)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "var(--primary)",
+        marginBottom: "1.25rem",
+        flexShrink: 0,
+      }}>
+        <Icon size={22} strokeWidth={1.6} />
       </div>
 
-      {/* Content */}
-      <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", flexGrow: 1 }}>
-        <div style={{
-          width: "48px",
-          height: "48px",
-          borderRadius: "12px",
-          background: `${service.accent}12`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: service.accent,
-          marginBottom: "1.25rem",
-        }}>
-          <Icon size={22} strokeWidth={1.6} />
-        </div>
+      <h4 style={{
+        fontFamily: "var(--font-heading)",
+        fontSize: "1.0625rem",
+        fontWeight: 700,
+        color: "var(--text-primary)",
+        marginBottom: "0.625rem",
+        lineHeight: 1.3,
+      }}>
+        {svc.title}
+      </h4>
 
-        <h4 style={{
-          fontFamily: "var(--font-heading)",
-          fontSize: "1.125rem",
-          fontWeight: 700,
-          color: "var(--text-primary)",
-          marginBottom: "0.625rem",
-          lineHeight: 1.25,
-        }}>
-          {service.title}
-        </h4>
+      <p style={{
+        fontSize: "0.9rem",
+        color: "var(--text-secondary)",
+        lineHeight: 1.65,
+        flex: 1,
+        marginBottom: "1.375rem",
+      }}>
+        {svc.description}
+      </p>
 
-        <p style={{
-          fontSize: "0.9375rem",
-          color: "var(--text-secondary)",
-          lineHeight: 1.6,
-          flex: 1,
-          marginBottom: "1.5rem",
-        }}>
-          {service.description}
-        </p>
-
-        <div style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "0.4rem",
-          fontSize: "0.875rem",
-          fontWeight: 600,
-          color: service.accent,
-          marginTop: "auto",
-        }}>
-          Discover Solution <ArrowRight size={14} />
-        </div>
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "0.35rem",
+        fontSize: "0.875rem",
+        fontWeight: 600,
+        color: "var(--primary)",
+      }}>
+        Learn more <ArrowRight size={14} />
       </div>
-    </div>
+    </Link>
   );
 }
 
 export default function ServicesGrid() {
-  const { ref, visible } = useReveal();
+  const { ref: headRef, visible: headVisible } = useReveal();
+  const { ref: supplyRef, visible: supplyVisible } = useReveal();
 
   return (
     <section
@@ -172,62 +168,135 @@ export default function ServicesGrid() {
     >
       <div className="divider-glow" style={{ position: "absolute", top: 0, left: 0, right: 0 }} />
 
-      <div className="container" style={{ position: "relative" }}>
-        {/* Header */}
+      <div className="container">
+
+        {/* ── Section header ── */}
         <div
-          ref={ref}
+          ref={headRef}
           style={{
-            textAlign: "center",
-            marginBottom: "3.5rem",
-            transform: visible ? "translateY(0)" : "translateY(18px)",
-            opacity: visible ? 1 : 0,
+            marginBottom: "3rem",
+            transform: headVisible ? "translateY(0)" : "translateY(16px)",
+            opacity: headVisible ? 1 : 0,
             transition: "all 0.45s cubic-bezier(0.23,1,0.32,1)",
           }}
         >
-          <div className="section-label" style={{ marginBottom: "1rem" }}>What We Do</div>
-          <h2 style={{ margin: "0 0 0.875rem" }}>
-            Integrated Infrastructure{" "}
-            <span className="text-gradient">Solutions</span>
-          </h2>
-          <p style={{ maxWidth: "500px", margin: "0 auto", fontSize: "1.0625rem" }}>
-            From concept to commissioning — we engineer, install and maintain
-            water and energy infrastructure that lasts.
-          </p>
+          <div style={{ textAlign: "center" }}>
+            <div className="section-label" style={{ marginBottom: "0.875rem" }}>What We Do</div>
+            <h2 style={{ margin: "0 0 1rem" }}>
+              Engineering services,{" "}
+              <span className="text-gradient">supply and installation.</span>
+            </h2>
+            <p style={{ maxWidth: "560px", margin: "0 auto 1.5rem", fontSize: "1.0625rem", color: "var(--text-secondary)" }}>
+              From feasibility through to handover — we design the system, supply every component, and complete the installation ourselves. No subcontractors.
+            </p>
+            <Link href="/services" className="btn-outline-custom">
+              View All Services <ArrowRight size={14} />
+            </Link>
+          </div>
         </div>
 
-        {/* Grid */}
+        {/* ── Core services — 3-column icon cards ── */}
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "1.125rem",
+            gap: "1rem",
+            marginBottom: "3rem",
           }}
-          className="services-grid"
+          className="core-grid"
         >
-          {SERVICES.map((service, i) => (
-            <ServiceCard key={service.id} service={service} delay={i * 70} />
+          {CORE.map((svc, i) => (
+            <CoreCard key={svc.id} svc={svc} delay={i * 65} />
           ))}
         </div>
 
-        {/* CTA */}
-        <div style={{ textAlign: "center", marginTop: "3rem" }}>
-          <Link href="/solutions" className="btn-outline-custom">
-            View All Solutions <ArrowRight size={15} />
-          </Link>
+        {/* ── Supply & Equipment strip ── */}
+        <div
+          ref={supplyRef}
+          style={{
+            background: "#FFFFFF",
+            border: "1px solid rgba(0,0,0,0.07)",
+            borderRadius: "14px",
+            padding: "2rem",
+            transform: supplyVisible ? "translateY(0)" : "translateY(16px)",
+            opacity: supplyVisible ? 1 : 0,
+            transition: "all 0.45s cubic-bezier(0.23,1,0.32,1)",
+          }}
+        >
+          <div style={{ marginBottom: "1.5rem" }}>
+            <div style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-tertiary)", marginBottom: "0.375rem" }}>
+              Supply & Equipment
+            </div>
+            <p style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", margin: 0 }}>
+              We source and supply every component used in our projects — no third-party markups, correctly specified for your system.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(6, 1fr)",
+              gap: "0",
+            }}
+            className="supply-grid"
+          >
+            {SUPPLY.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.id}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    padding: "1rem",
+                    borderRight: i < SUPPLY.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none",
+                  }}
+                  className="supply-item"
+                >
+                  <div style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "9px",
+                    background: "rgba(0,0,0,0.03)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "var(--text-secondary)",
+                    marginBottom: "0.75rem",
+                    flexShrink: 0,
+                  }}>
+                    <Icon size={17} strokeWidth={1.6} />
+                  </div>
+                  <div style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "0.2rem" }}>
+                    {item.label}
+                  </div>
+                  <div style={{ fontSize: "0.78rem", color: "var(--text-tertiary)", lineHeight: 1.4 }}>
+                    {item.desc}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       <style>{`
-        .service-card:hover {
-          transform: translateY(-5px) !important;
-          border-color: rgba(0,130,214,0.18) !important;
-          box-shadow: 0 12px 36px rgba(0,0,0,0.09) !important;
+        .core-card:hover {
+          border-color: rgba(0,130,214,0.22) !important;
+          box-shadow: 0 8px 28px rgba(0,0,0,0.07) !important;
         }
         @media (max-width: 1024px) {
-          .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .core-grid   { grid-template-columns: repeat(2, 1fr) !important; }
+          .supply-grid { grid-template-columns: repeat(3, 1fr) !important; }
+          .supply-item:nth-child(3) { border-right: none !important; }
+          .supply-item:nth-child(3) ~ .supply-item { border-top: 1px solid rgba(0,0,0,0.06); }
         }
         @media (max-width: 640px) {
-          .services-grid { grid-template-columns: 1fr !important; }
+          .core-grid   { grid-template-columns: 1fr !important; }
+          .supply-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .supply-item { border-right: none !important; border-bottom: 1px solid rgba(0,0,0,0.06); }
+          .supply-item:last-child { border-bottom: none !important; }
         }
       `}</style>
     </section>

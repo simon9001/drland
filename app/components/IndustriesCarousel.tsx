@@ -44,26 +44,15 @@ export default function IndustriesCarousel() {
 
       <div className="container" style={{ position: "relative" }}>
         {/* Header row */}
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2.5rem", flexWrap: "wrap", gap: "1.25rem" }}>
-          <div>
-            <div className="section-label" style={{ marginBottom: "0.875rem" }}>Industries Served</div>
-            <h2 style={{ margin: 0 }}>Built For Every Sector</h2>
-          </div>
-
-          {/* Symmetric scroll buttons */}
-          <div style={{ display: "flex", gap: "0.625rem" }}>
-            <button
-              onClick={() => scroll("left")}
-              className="scroll-btn"
-              aria-label="Scroll left"
-            >
+        <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+          <div className="section-label" style={{ marginBottom: "0.875rem" }}>Industries Served</div>
+          <h2 style={{ margin: "0 0 1.5rem" }}>Built For Every Sector</h2>
+          {/* Scroll buttons centred below heading */}
+          <div style={{ display: "flex", gap: "0.625rem", justifyContent: "center" }}>
+            <button onClick={() => scroll("left")} className="scroll-btn" aria-label="Scroll left">
               <ChevronLeft size={18} />
             </button>
-            <button
-              onClick={() => scroll("right")}
-              className="scroll-btn"
-              aria-label="Scroll right"
-            >
+            <button onClick={() => scroll("right")} className="scroll-btn" aria-label="Scroll right">
               <ChevronRight size={18} />
             </button>
           </div>

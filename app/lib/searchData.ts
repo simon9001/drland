@@ -58,6 +58,56 @@ export const SEARCH_DATA: SearchItem[] = [
     tags: ["consultancy", "consulting", "engineering", "feasibility", "design", "planning", "audit", "certification"],
   },
 
+  /* ── SUPPLY & EQUIPMENT ──────────────────────────────────── */
+  {
+    id: "chemicals",
+    title: "Chemical Supply",
+    type: "Service",
+    description: "Water treatment and swimming pool chemicals sourced and supplied for all HIDRACORE projects.",
+    href: "/services#chemicals",
+    tags: ["chemicals", "chlorine", "pool chemicals", "water treatment chemicals", "dosing"],
+  },
+  {
+    id: "inverters",
+    title: "Inverters",
+    type: "Service",
+    description: "Solar inverters, hybrid inverters and battery storage units — correctly specified for your system.",
+    href: "/services#inverters",
+    tags: ["inverter", "solar inverter", "hybrid inverter", "ups", "battery storage"],
+  },
+  {
+    id: "pumping",
+    title: "Pumping Systems",
+    type: "Service",
+    description: "Submersible, surface and booster pumps for borehole, irrigation and water transfer applications.",
+    href: "/services#pumping",
+    tags: ["pump", "pumping", "submersible", "borehole pump", "water pump", "booster"],
+  },
+  {
+    id: "pipes",
+    title: "Pipes & Fittings",
+    type: "Service",
+    description: "HDPE, uPVC and galvanised pipework and fittings for all water and irrigation applications.",
+    href: "/services#pipes",
+    tags: ["pipes", "fittings", "hdpe", "upvc", "pipeline", "plumbing"],
+  },
+  {
+    id: "electronics",
+    title: "Electronics & Automation",
+    type: "Service",
+    description: "Sensors, controllers, automation components and monitoring equipment for water and energy systems.",
+    href: "/services#electronics",
+    tags: ["electronics", "sensors", "controllers", "automation", "monitoring", "plc"],
+  },
+  {
+    id: "breakers",
+    title: "Circuit Breakers & Electrical",
+    type: "Service",
+    description: "MCBs, RCDs, distribution boards and switchgear for solar and electrical installations.",
+    href: "/services#breakers",
+    tags: ["breakers", "circuit breaker", "mcb", "rcd", "distribution board", "switchgear", "electrical"],
+  },
+
   /* ── INDUSTRIES ──────────────────────────────────────────── */
   {
     id: "residential",

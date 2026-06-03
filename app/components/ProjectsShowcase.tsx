@@ -63,7 +63,7 @@ const getCategoryColor = (cat: string) => {
     case "solar":     return "#FDB913";
     case "water":     return "#0082D6";
     case "irrigation":return "#2DC653";
-    case "pools":     return "#0099FF";
+    case "pools":     return "#003D6A";
     default:          return "#718096";
   }
 };
