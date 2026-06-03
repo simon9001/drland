@@ -9,7 +9,11 @@ export const metadata: Metadata = {
     "Premium water and energy infrastructure engineering. Solar systems, borehole drilling, water treatment, irrigation, swimming pools and engineering consultancy in Zimbabwe.",
   keywords:
     "solar energy Zimbabwe, borehole drilling, water treatment, irrigation systems, swimming pool construction, engineering consultancy",
-  themeColor: "#FFFFFF",
+  icons: {
+    icon: "/Logo.png",
+    shortcut: "/Logo.png",
+    apple: "/Logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -19,6 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="theme-color" content="#FFFFFF" />
+        <link rel="icon" href="/Logo.png" type="image/png" />
+        <link rel="shortcut icon" href="/Logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/Logo.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
